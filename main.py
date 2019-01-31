@@ -22,3 +22,71 @@ x = x[:, 1:]
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, random_state = 0)
 
+# Feature Scaling
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+x_train = sc.fit_transform(x_train)
+x_test = sc.transform(x_test)
+
+#part 2 creating ANN 
+
+#importing keras library and packages
+import keras
+from keras.models import Sequential
+from keras.layers import Dense
+
+#INITIALIZING ANN
+classifier = Sequential ()
+
+#adding input layer and first hidden layer 
+# classifier.add(Dense(output_dim = 6 , init = 'uniform',activation = 'relu', input_dim = 11))
+classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+
+#adding second hidden layer
+# classifier.add(Dense(output_dim = 6 , init = 'uniform',activation = 'relu'))
+classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+
+#adding second output layer
+# classifier.add(Dense(output_dim = 1 , init = 'uniform',activation = 'sigmoid'))
+classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+
+#compiling ANN
+
+classifier.compile(optimizer = 'adam' , loss = 'binary_crossentropy' , metrics = ['accuracy'])
+
+#fitting the ANN to the training set 
+
+classifier.fit(x_train,y_train ,  batch_size = 10 , nb_epoch = 100)
+
+
+#part 3 making the prediction and evaluating the model
+
+# Predicting the Test set results
+y_pred = classifier.predict(x_test)
+y_pred = (y_pred > 0.5)
+
+from sklearn.metrics import accuracy_score
+percentage_accuracy= accuracy_score(y_test,y_pred)*100
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -68,6 +68,23 @@ y_pred = (y_pred > 0.5)
 from sklearn.metrics import accuracy_score
 percentage_accuracy= accuracy_score(y_test,y_pred)*100
 
+#part 4 evaluating , improving and tuning the ANN 
+#evaluating the ann
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import cross_val_score
+from keras.models import Sequential
+from keras.layers import Dense
+def build_classifier():
+    classifier = Sequential ()
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+    classifier.compile(optimizer = 'adam' , loss = 'binary_crossentropy' , metrics = ['accuracy'])
+    return classifier
+classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, epochs = 100)
+accuracies = cross_val_score(estimator = classifier, x = x_train, y = y_train, cv = 10, n_jobs = -1)
+    
+    
 
 
 
